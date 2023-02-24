@@ -39,6 +39,8 @@ const addressKeys = [
   "city",
   "state",
   "postcode",
+  "lga",
+  "lotplan"
 ];
 export class PlsPlusAddress extends FieldsetComponent {
   constructor(...args) {
@@ -89,7 +91,7 @@ export class PlsPlusAddress extends FieldsetComponent {
                 type: "hidden",
               },
               {
-                label: "Address line 1 <i>(include unit number if needed)</i>",
+                label: "Address line 1 <em>(include unit number if needed)</em>",
                 key: "address1",
                 tags: ["address1"],
                 type: "textfield",
@@ -116,7 +118,7 @@ export class PlsPlusAddress extends FieldsetComponent {
                 validate: addressValidation,
               },
               {
-                label: "Town, City or Suburb",
+                label: "Town, city or suburb",
                 key: "city",
                 tags: ["city"],
                 type: "textfield",
@@ -149,7 +151,30 @@ export class PlsPlusAddress extends FieldsetComponent {
                   minLength: 4,
                   maxLength: 4,
                 },
+                
               },
+              {
+                label: "Local government area (LGA)",
+                key: "lga",
+                tags: ["lga"],
+                type: "textfield",
+                input: true,
+                validate: {
+                  required: true,
+                  ...addressValidation,
+                },
+              },
+              {
+                label: "Lot on Plan",
+                key: "lotplan",
+                tags: ["lotplan"],
+                type: "textfield",
+                input: true,
+                validate: {
+                  required: true,
+                  ...addressValidation,
+                }
+              }
             ],
           },
         ],
@@ -198,7 +223,7 @@ export class PlsPlusAddress extends FieldsetComponent {
       .replace(/ +/g, " ")
       .trim();
   }
-
+  
   onChange(flags, fromRoot) {
     if (this.autocompleteMode) {
       if (this.address)
@@ -259,7 +284,9 @@ export class PlsPlusAddress extends FieldsetComponent {
             autocompleteAddress: "",
             selectedAddress: "",
             state: "QLD",
-            mode: this.mode,
+            lga: "",
+            lotplan: "",
+            mode: this.mode
           },
         }
       : {};

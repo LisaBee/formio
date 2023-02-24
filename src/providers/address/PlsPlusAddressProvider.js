@@ -104,10 +104,16 @@ export class PlsPlusAddressProvider extends CustomAddressProvider {
   getPostcode(addressLine) {
     return addressLine.Postcode || "";
   }
-
+  
+  getLotPlan(addressLine) {
+    return (lot) ? lot + '/' + plan : plan;
+  }
+  
   breakAddress(address) {
     const siteName = address.SiteName || "";
     const lot = address.Parcel?.Lot ? `LOT ${address.Parcel.Lot}` : undefined;
+    const plan = address.Parcel?.Plan ? ${address.Parcel.Plan} : '';
+    
     const complexDesc = [
       lot,
       address.Unit?.TypeCode,
@@ -136,14 +142,15 @@ export class PlsPlusAddressProvider extends CustomAddressProvider {
     const addressLine = {
       siteName,
       lot,
+      plan,
       complexDesc,
       roadNumberPart,
       streetAddress,
       Locality: address.Locality,
       State: address.State,
-      Postcode: address.Postcode,
+      Postcode: address.Postcode
     };
-
+            
     return {
       address1: this.getAddress1(addressLine),
       address2: this.getAddress2(addressLine),
@@ -151,6 +158,7 @@ export class PlsPlusAddressProvider extends CustomAddressProvider {
       city: this.getCity(addressLine),
       state: this.getState(addressLine),
       postcode: this.getPostcode(addressLine),
+      lotplan: this.getLotPlan(addressLine)
     };
   }
 

@@ -109,11 +109,15 @@ export class PlsPlusAddressProvider extends CustomAddressProvider {
     return (lot) ? lot + '/' + plan : plan;
   }
   
+  getLGA(addressLine) {
+    return addressLine.lga || "";
+  }
+  
   breakAddress(address) {
     const siteName = address.SiteName || "";
     const lot = address.Parcel?.Lot ? `LOT ${address.Parcel.Lot}` : undefined;
-    const plan = address.Parcel?.Plan ? ${address.Parcel.Plan} : '';
-    
+    const plan = address.Parcel?.Plan ? address.Parcel.Plan : '';
+    const lga = address.LocalGovernmentArea?.Name : undefined;
     const complexDesc = [
       lot,
       address.Unit?.TypeCode,
@@ -148,7 +152,8 @@ export class PlsPlusAddressProvider extends CustomAddressProvider {
       streetAddress,
       Locality: address.Locality,
       State: address.State,
-      Postcode: address.Postcode
+      Postcode: address.Postcode,
+      LGA: lga
     };
             
     return {
@@ -158,7 +163,8 @@ export class PlsPlusAddressProvider extends CustomAddressProvider {
       city: this.getCity(addressLine),
       state: this.getState(addressLine),
       postcode: this.getPostcode(addressLine),
-      lotplan: this.getLotPlan(addressLine)
+      lotplan: this.getLotPlan(addressLine),
+      lga: this.getLGA(addressLine)
     };
   }
 
